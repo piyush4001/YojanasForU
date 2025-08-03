@@ -64,14 +64,64 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 // PATCH /api/user/profile
+// const updateUserProfile = asyncHandler(async (req, res) => {
+//   const userId = req.user._id
+
+//   const { category, gender, income, state, district } = req.body
+
+//   let avatarUrl = undefined
+
+//   // Handle avatar upload if file is provided
+//   if (req.file?.path) {
+//     const avatarUpload = await uploadOnCloudinary(req.file.path)
+
+//     if (!avatarUpload?.url) {
+//       throw new ApiError(400, "Error while uploading avatar")
+//     }
+
+//     avatarUrl = avatarUpload.url
+
+//     // TODO: Optional: Delete old avatar from Cloudinary using public_id (if you store it)
+//   }
+
+//   // Prepare updated fields
+//   const updatedFields = {}
+//   if (avatarUrl) updatedFields.avatar = avatarUrl
+//   if (category) updatedFields.category = category
+//   if (gender) updatedFields.gender = gender
+//   if (income) updatedFields.income = income
+//   if (state) updatedFields.state = state
+//   if (district) updatedFields.district = district
+
+//   // Update user
+//   const updatedUser = await User.findByIdAndUpdate(
+//     userId,
+//     { $set: updatedFields },
+//     { new: true }
+//   ).select("-password")
+
+//   return res
+//     .status(200)
+//     .json(new ApiResponse(200, updatedUser, "Profile updated successfully"))
+// })
+
 const updateUserProfile = asyncHandler(async (req, res) => {
   const userId = req.user._id
 
-  const { category, gender, income, state, district } = req.body
+  const {
+    fullname,
+    phoneNo,
+    avatar,
+    category,
+    gender,
+    income,
+    state,
+    district,
+  } = req.body
 
-  let avatarUrl = undefined
+  let avatarUrl = avatar
 
-  // Handle avatar upload if file is provided
+  // If uploading a new avatar file using multipart/form-data
   if (req.file?.path) {
     const avatarUpload = await uploadOnCloudinary(req.file.path)
 
@@ -80,12 +130,12 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
 
     avatarUrl = avatarUpload.url
-
-    // TODO: Optional: Delete old avatar from Cloudinary using public_id (if you store it)
   }
 
-  // Prepare updated fields
+  // Build only the fields that are actually provided
   const updatedFields = {}
+  if (fullname) updatedFields.fullname = fullname
+  if (phoneNo) updatedFields.phoneNo = phoneNo
   if (avatarUrl) updatedFields.avatar = avatarUrl
   if (category) updatedFields.category = category
   if (gender) updatedFields.gender = gender
@@ -93,7 +143,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   if (state) updatedFields.state = state
   if (district) updatedFields.district = district
 
-  // Update user
+  // Update the user
   const updatedUser = await User.findByIdAndUpdate(
     userId,
     { $set: updatedFields },
@@ -104,7 +154,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, updatedUser, "Profile updated successfully"))
 })
-
+// this above code is for editing the profile
 const loginUser = asyncHandler(async (req, res) => {
   const { email, phoneNo, username, password } = req.body
 
@@ -287,6 +337,30 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, user, "Account details updated successfully"))
 })
+const updateUserRole = asyncHandler(async (req, res) => {
+  const userId = req.params.id
+  const { role } = req.body
+
+  if (!["user", "admin"].includes(role)) {
+    return res.status(400).json({ message: "Invalid role value" })
+  }
+
+  const user = await User.findById(userId)
+  if (!user) {
+    return res.status(404).json({ message: "User not found" })
+  }
+
+  user.role = role
+  await user.save()
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "User role updated successfully"))
+})
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password -refreshToken")
+  res.status(200).json({ users })
+})
 
 export {
   registerUser,
@@ -297,4 +371,5 @@ export {
   getCurrentUser,
   updateAccountDetails,
   updateUserProfile,
+  updateUserRole, // ✅ Add this line
 }

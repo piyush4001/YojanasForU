@@ -1,84 +1,99 @@
-import React from "react";
+// src/pages/SchemeDetail.jsx
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import schemes from "../data/schemes";
-import categories from "../data/categories";
+import axios from "axios";
 
 const SchemeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const scheme = schemes.find((s) => s.id === id);
+  const [scheme, setScheme] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!scheme) {
-    return (
-      <div className="p-8 text-center text-xl">
-        Scheme not found.{" "}
-        <button
-          onClick={() => navigate("/")}
-          className="text-blue-600 underline ml-2"
-        >
-          Go Home
-        </button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const fetchScheme = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/api/v1/schemes/${id}`
+        );
+        setScheme(res.data.scheme);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load scheme details");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const categoryIcons = scheme.categories.map((catId) => {
-    const cat = categories.find((c) => c.id === catId);
-    return (
-      <span
-        key={catId}
-        className="inline-flex items-center px-3 py-1 text-sm bg-gray-100 rounded-full mr-2 mb-2"
-      >
-        {cat?.icon} {cat?.name}
-      </span>
-    );
-  });
+    fetchScheme();
+  }, [id]);
+
+  if (loading) return <p className="text-center py-10">Loading...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
+  if (!scheme) return <p className="text-center">No scheme found.</p>;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <button
         onClick={() => navigate(-1)}
-        className="mb-4 text-sm text-gray-600 hover:underline"
+        className="text-blue-600 hover:underline mb-4"
       >
         ← Back
       </button>
 
-      <h1 className="text-3xl font-bold mb-2">{scheme.title}</h1>
-      <p className="text-gray-700 mb-4">{scheme.description}</p>
+      <h1 className="text-3xl font-bold mb-4">{scheme.title}</h1>
 
-      <div className="mb-6">{categoryIcons}</div>
+      {scheme.image && (
+        <img
+          src={scheme.image}
+          alt={scheme.title}
+          className="w-full h-64 object-cover rounded-lg mb-6"
+        />
+      )}
 
-      <div className="space-y-4 text-gray-800">
+      <div className="space-y-4 text-gray-700 leading-relaxed">
+        {scheme.description && (
+          <>
+            <h2 className="font-semibold text-xl">Description:</h2>
+            <p>{scheme.description}</p>
+          </>
+        )}
         {scheme.eligibility && (
-          <div>
-            <h2 className="text-lg font-semibold">Eligibility</h2>
+          <>
+            <h2 className="font-semibold text-xl">Eligibility:</h2>
             <p>{scheme.eligibility}</p>
-          </div>
+          </>
         )}
         {scheme.benefits && (
-          <div>
-            <h2 className="text-lg font-semibold">Benefits</h2>
+          <>
+            <h2 className="font-semibold text-xl">Benefits:</h2>
             <p>{scheme.benefits}</p>
-          </div>
+          </>
         )}
-        {scheme.howToApply && (
-          <div>
-            <h2 className="text-lg font-semibold">How to Apply</h2>
-            <p>{scheme.howToApply}</p>
-          </div>
+        {scheme.application && (
+          <>
+            <h2 className="font-semibold text-xl">Application Process:</h2>
+            <p>{scheme.application}</p>
+          </>
         )}
+        {scheme.department && (
+          <>
+            <h2 className="font-semibold text-xl">Department:</h2>
+            <p>{scheme.department}</p>
+          </>
+        )}
+
         {scheme.link && (
-          <div>
-            <a
-              href={scheme.link}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block mt-4 text-blue-600 hover:underline"
-            >
-              Visit Official Website ↗
-            </a>
-          </div>
+          <a
+            href={scheme.link}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-block mt-6 px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Apply Now
+          </a>
         )}
       </div>
     </div>
