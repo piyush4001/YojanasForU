@@ -28,5 +28,7 @@ router.route("/refresh-token").post(refreshAccessToken)
 router.route("/change-password").post(verifyJWT, changeCurrentPassword)
 router.route("/get-current-user").get(verifyJWT, getCurrentUser)
 router.route("/update-account").patch(verifyJWT, updateAccountDetails)
+//below line is added
+router.route("/update-profile").put(verifyJWT, updateUserProfile)
 
 export default router

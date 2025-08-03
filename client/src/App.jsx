@@ -15,7 +15,10 @@ import CategoryDetail from "./pages/CategoryDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import SearchResults from "./pages/SearchResults";
-
+import Profile from "./pages/Profile";
+import AuthCard from "./components/AuthCard";
+import AuthPage from "./pages/AuthPage";
+import EditProfile from "./components/EditProfile";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import { ToastContainer } from "react-toastify";
@@ -84,6 +87,9 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/search" element={<SearchResults />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/signin" element={<AuthPage />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
         <Footer />
       </div>
