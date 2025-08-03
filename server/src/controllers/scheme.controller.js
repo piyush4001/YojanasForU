@@ -72,6 +72,47 @@ const getAllSchemes = async (req, res) => {
   }
 }
 
+const getSchemesByCategory = asyncHandler(async (req, res) => {
+  const categoryParam = req.params.name?.toLowerCase().trim()
+
+  if (!categoryParam) {
+    throw new ApiError(400, "Category name is required")
+  }
+
+  // Step 1: Clean and extract words (e.g., "Women & Child" → ["women", "child"])
+  const inputWords = categoryParam
+    .split(/\s|&|,/)
+    .map((w) => w.trim().toLowerCase())
+    .filter(Boolean)
+
+  // Step 2: Fetch all schemes and manually filter
+  const allSchemes = await Scheme.find()
+
+  // Step 3: Match if any category word matches inputWords
+  const matchingSchemes = allSchemes.filter((scheme) => {
+    if (!Array.isArray(scheme.category)) return false
+
+    // Convert camelCase categories like "seniorCitizens" to ["senior", "citizens"]
+    const flatCategoryWords = scheme.category
+      .map((cat) =>
+        cat
+          .replace(/([a-z])([A-Z])/g, "$1 $2") // camelCase to space
+          .toLowerCase()
+          .split(" ")
+      )
+      .flat()
+
+    // Check if at least one input word exists in category words
+    return inputWords.some((inputWord) => flatCategoryWords.includes(inputWord))
+  })
+
+  res.status(200).json({
+    success: true,
+    message: `${matchingSchemes.length} schemes found for category`,
+    data: matchingSchemes,
+  })
+})
+
 const getSchemeById = asyncHandler(async (req, res) => {
   const scheme = await Scheme.findById(req.params.id)
   if (!scheme) {
@@ -119,4 +160,5 @@ export {
   deleteScheme,
   getSchemeByTitle,
   getLatestSchemes,
+  getSchemesByCategory,
 }

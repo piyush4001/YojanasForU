@@ -14,7 +14,7 @@ const Schemes = () => {
 
   // 👇 Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const schemesPerPage = 6;
+  const schemesPerPage = 3;
 
   useEffect(() => {
     const fetchSchemes = async () => {
@@ -38,18 +38,10 @@ const Schemes = () => {
           ? response.data.data
           : [];
 
-        const updated = fetched.map((scheme) => ({
-          ...scheme,
-          description:
-            scheme.description === "Updated scheme description for testing"
-              ? "The Ujjwala Yojana provides LPG connections to BPL families to ensure clean cooking fuel access."
-              : scheme.description,
-        }));
-
-        setSchemes(updated);
+        setSchemes(fetched);
 
         const allCategories = new Set();
-        updated.forEach((scheme) => {
+        fetched.forEach((scheme) => {
           scheme.category?.forEach((cat) => allCategories.add(cat));
         });
         setAvailableCategories(Array.from(allCategories));

@@ -18,8 +18,8 @@ const categories = [
   { title: "Health", Icon: Stethoscope, path: "/category/health" },
   { title: "Employment", Icon: Briefcase, path: "/category/employment" },
   { title: "Housing", Icon: HomeIcon, path: "/category/housing" },
-  { title: "Senior Citizens", Icon: Users, path: "/category/seniors" },
-  { title: "Women & Child", Icon: Baby, path: "/category/women-child" },
+  { title: "Senior Citizens", Icon: Users, path: "/category/Senior Citizens" },
+  { title: "Women & Child", Icon: Baby, path: "/category/women&child" },
 ];
 
 const Home = () => {

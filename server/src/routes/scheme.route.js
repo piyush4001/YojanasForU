@@ -7,6 +7,7 @@ import {
   deleteScheme,
   getSchemeByTitle,
   getLatestSchemes,
+  getSchemesByCategory,
 } from "../controllers/scheme.controller.js"
 
 const router = express.Router()
@@ -14,6 +15,7 @@ const router = express.Router()
 // Order matters here!
 //Public Access - Search & View
 router.post("/filter", getAllSchemes)
+router.get("/category/:name", getSchemesByCategory) // Fetch schemes by category
 router.get("/latest-scheme", getLatestSchemes)
 router.get("/title/:title", getSchemeByTitle)
 router.get("/:id", getSchemeById)
