@@ -8,8 +8,6 @@ import SchemeDetails from "./pages/SchemeDetails";
 import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer/Footer";
 import CategoryPage from "./pages/CategoryPage";
-import Category from "./pages/category";
-import CategoryDetail from "./pages/CategoryDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import SearchResults from "./pages/SearchResults";
@@ -17,11 +15,10 @@ import Profile from "./pages/Profile";
 import AuthCard from "./components/AuthCard";
 import AuthPage from "./pages/AuthPage";
 import EditProfile from "./components/EditProfile";
-import ProtectedRoute from "./components/ProtectedRoute";
-
+import ChatbotModal from "./components/ChatbotModal";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
-
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -61,28 +58,29 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="overflow-x-hidden">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/schemes" element={<Schemes />} />
-          <Route path="/schemes/:id" element={<SchemeDetails />} />
-          <Route path="/category" element={<Category />} />
-          <Route path="/category/:name" element={<CategoryPage />} />
-          <Route path="/category-detail/:id" element={<CategoryDetail />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/search" element={<SearchResults />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/signin" element={<AuthPage />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
-          <Route path="*" element={<NotFound />} /> {/* moved inside Routes */}
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <>
+      <ChatbotModal />
+      <Router>
+        <ScrollToTop />
+        <div className="overflow-x-hidden">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/schemes" element={<Schemes />} />
+            <Route path="/schemes/:id" element={<SchemeDetails />} />
+            <Route path="/category/:name" element={<CategoryPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/search" element={<SearchResults />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/signin" element={<AuthPage />} />
+            <Route path="/edit-profile" element={<EditProfile />} />
+            <Route path="*" element={<NotFound />} />{" "}
+          </Routes>
+          <Footer />
+        </div>
+      </Router>
+    </>
   );
 };
 

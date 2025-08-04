@@ -4,7 +4,7 @@ import { UserCircle2, ChevronDown } from "lucide-react";
 import SchemeFormModal from "./SchemeFormModal";
 import SearchBar from "./SearchBar";
 import logo from "../../assets/logo.png";
-import axios from "axios"; // use axios, not axiosInstance unless configured
+import axios from "axios";
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -45,23 +45,10 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await axios.post("/api/v1/users/logout", {}, { withCredentials: true });
-  //     setUser(null);
-  //     navigate("/");
-  //   } catch (err) {
-  //     console.error(
-  //       "Logout failed:",
-  //       err.response?.data?.message || err.message
-  //     );
-  //   }
-  // };
   const handleLogout = async () => {
     try {
       await axios.post("/api/v1/users/logout", {}, { withCredentials: true });
       setUser(null);
-
       // Redirect to login/signup page
       navigate("/AuthCard");
     } catch (err) {
@@ -92,7 +79,6 @@ const Navbar = () => {
           {/* Logo + Links */}
           <div className="flex items-center space-x-8">
             <img src={logo} alt="Logo" className="h-10 w-auto" />
-
             <ul className="hidden md:flex items-center space-x-6 text-sm font-medium">
               {navLinks.map((link) => (
                 <li key={link.label}>
@@ -106,7 +92,6 @@ const Navbar = () => {
               ))}
             </ul>
           </div>
-
           {/* Search Bar */}
           <div className="hidden md:flex items-center space-x-2">
             <SearchBar />
@@ -130,32 +115,6 @@ const Navbar = () => {
 
             {/* User Avatar / Sign In */}
             {user ? (
-              // <div className="relative" ref={dropdownRef}>
-              //   <button
-              //     onClick={() => setDropdownOpen(!dropdownOpen)}
-              //     className="flex items-center space-x-1 bg-blue-700 p-1 px-2 rounded hover:bg-blue-800"
-              //   >
-              //     <UserCircle2 className="h-6 w-6" />
-              //     <ChevronDown className="h-4 w-4" />
-              //   </button>
-
-              //   {dropdownOpen && (
-              //     <div className="absolute right-0 mt-2 bg-white text-black shadow-lg rounded-md overflow-hidden z-50">
-              //       <button
-              //         onClick={() => navigate("/profile")}
-              //         className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-              //       >
-              //         {language === "en" ? "Profile" : "प्रोफ़ाइल"}
-              //       </button>
-              //       <button
-              //         onClick={handleLogout}
-              //         className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-              //       >
-              //         {language === "en" ? "Logout" : "लॉग आउट"}
-              //       </button>
-              //     </div>
-              //   )}
-              // </div>
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -201,7 +160,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
       {/* Modal */}
       {showModal && <SchemeFormModal onClose={() => setShowModal(false)} />}
     </>

@@ -25,5 +25,7 @@ import schemeRouter from "./routes/scheme.route.js"
 app.use("/api/v1/healthcheck", healthcheckRouter)
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/schemes", schemeRouter)
+import chatRoutes from "./routes/chat.route.js"
+app.use("/api", chatRoutes)
 app.use(errorHandler)
 export { app }

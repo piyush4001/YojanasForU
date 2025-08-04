@@ -18,11 +18,11 @@ const SchemeCard = ({ scheme }) => {
       </div>
 
       <div className="text-sm text-gray-500 mb-1">
-        <strong>Location:</strong>{" "}
+        <strong>Location:</strong>
         {(
-          <p>
-            Location: {scheme.location?.district}, {scheme.location?.state}
-          </p>
+          <>
+            {scheme.location?.district} {scheme.location?.state}
+          </>
         ) || "All India"}
       </div>
 

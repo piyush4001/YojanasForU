@@ -20,7 +20,7 @@ const SchemeDetail = () => {
           `http://localhost:8000/api/v1/schemes/${id}`
         );
         // console.log("Raw Response:", response);
-        setScheme(response.data.data); // ✅ Correct extraction
+        setScheme(response.data.data); //  Correct extraction
         // console.log("Fetched Scheme:", response.data.data);
         setLoading(false);
       } catch (error) {
@@ -46,19 +46,19 @@ const SchemeDetail = () => {
 
       <h1 className="text-3xl font-bold mb-4">{scheme.title}</h1>
 
-      {scheme.image && (
+      {/* {scheme.image && (
         <img
           src={scheme.image}
           alt={scheme.title}
           className="w-full h-64 object-cover rounded-lg mb-6"
         />
-      )}
+      )} */}
 
       <div className="space-y-4 text-gray-700 leading-relaxed">
-        {scheme.description && (
+        {scheme.long_description && (
           <>
             <h2 className="font-semibold text-xl">Description:</h2>
-            <p>{scheme.description}</p>
+            <p>{scheme.long_description}</p>
           </>
         )}
         {scheme.eligibility && (
@@ -73,22 +73,22 @@ const SchemeDetail = () => {
             <p>{scheme.benefits}</p>
           </>
         )}
-        {scheme.application && (
+        {/* {scheme.application && (
           <>
             <h2 className="font-semibold text-xl">Application Process:</h2>
             <p>{scheme.application}</p>
           </>
-        )}
-        {scheme.department && (
+        )} */}
+        {scheme.Department && (
           <>
             <h2 className="font-semibold text-xl">Department:</h2>
-            <p>{scheme.department}</p>
+            <p>{scheme.Department}</p>
           </>
         )}
 
-        {scheme.link && (
+        {scheme.applicationLink && (
           <a
-            href={scheme.link}
+            href={scheme.applicationLink}
             target="_blank"
             rel="noreferrer"
             className="inline-block mt-6 px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"

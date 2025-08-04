@@ -3,8 +3,10 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 
 const createScheme = asyncHandler(async (req, res) => {
-  const scheme = await Scheme.create(req.body)
-  res.status(201).json(new ApiResponse(201, scheme, "Scheme created"))
+  const isArray = Array.isArray(req.body)
+  const schemes = await Scheme.create(req.body) // handles both array and object
+  const message = isArray ? "Schemes created" : "Scheme created"
+  res.status(201).json(new ApiResponse(201, schemes, message))
 })
 
 const getLatestSchemes = asyncHandler(async (req, res) => {
@@ -35,6 +37,16 @@ const getAllSchemes = async (req, res) => {
     }
     if (body.state) queryObj["location.state"] = body.state
     if (body.district) queryObj["location.district"] = body.district
+    if (body.govType) queryObj.govType = body.govType
+    if (body.department) queryObj.Department = body.department
+    if (body.documents) {
+      if (Array.isArray(body.documents)) {
+        queryObj.documents = { $in: body.documents }
+      } else {
+        queryObj.documents = body.documents
+      }
+    }
+    // 🏷️ Filter by incomeLimit
 
     // 💰 Range filter for incomeLimit
     if (body.incomeLimit) {

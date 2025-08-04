@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import axios from "axios";
 import { avatarOptions } from "../utils/avatarOptions";
 import { useNavigate } from "react-router-dom";
@@ -15,10 +15,36 @@ const EditProfile = () => {
     district: "",
   });
   const [states, setStates] = useState([]);
+  const [districts, setDistricts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (formData.state) {
+      // Fetch districts data when state changes
+      axios
+        .get(
+          "https://api.data.gov.in/resource/37231365-78ba-44d5-ac22-3deec40b9197",
+          {
+            params: {
+              "api-key":
+                "579b464db66ec23bdd000001a4aeda66a76a4b6f659d40e02dc93e83", // 🔑 Replace with actual API key
+              format: "json",
+              "filters[state_name_english]": formData.state,
+              limit: 100,
+            },
+          }
+        )
+        .then((res) => {
+          setDistricts(res.data.records);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch districts data:", err);
+        });
+    }
+  }, [formData.state]);
 
   // Fetch current user data on mount
   useEffect(() => {
@@ -72,6 +98,7 @@ const EditProfile = () => {
       })
       .finally(() => setLoading(false));
   }, []);
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -225,15 +252,21 @@ const EditProfile = () => {
           <label className="block text-gray-600 dark:text-gray-300 mb-1">
             District
           </label>
-          <input
-            type="text"
-            name="district"
+          <select
             value={formData.district}
-            onChange={handleChange}
+            onChange={(e) =>
+              setFormData({ ...formData, district: e.target.value })
+            }
             className="w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white"
-          />
+          >
+            <option value="">Select District</option>
+            {districts.map((d, index) => (
+              <option key={index} value={d.district_name_english}>
+                {d.district_name_english}
+              </option>
+            ))}
+          </select>
         </div>
-
         {/* Avatar Selection */}
         <div>
           <label className="block text-gray-600 dark:text-gray-300 mb-2">

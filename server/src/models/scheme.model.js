@@ -10,7 +10,12 @@ const schemeSchema = Schema(
       required: true,
     },
     description: String,
+    long_description: String,
     eligibility: String,
+    image: String,
+    benefits: String,
+    applicationLink: String,
+    Department: String,
     category: [
       {
         type: String,
@@ -28,6 +33,10 @@ const schemeSchema = Schema(
     documents: [String],
     incomeLimit: {
       type: Number,
+    },
+    govType: {
+      type: String,
+      enum: ["Central", "State"],
     },
   },
   { timestamps: true }

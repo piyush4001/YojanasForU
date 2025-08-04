@@ -14,9 +14,10 @@ const teamMembers = [
     name: "Piyush Soni",
     role: "Backend Developer",
     bio: "Focused on building secure, scalable APIs and infrastructure for civic tech.",
-    image: "https://i.pravatar.cc/150?img=58",
+    image:
+      "https://media.licdn.com/dms/image/v2/D4E03AQFH2CZ9LRZhiQ/profile-displayphoto-shrink_400_400/B4EZbOs0MLGcAo-/0/1747224578665?e=1756944000&v=beta&t=phL6Ib26zQOGyI-pGK8mnVxRPKlke4qx9X2DDOMsurQ",
     github: "https://github.com/example",
-    linkedin: "https://linkedin.com/in/example",
+    linkedin: "https://www.linkedin.com/in/piyush-soni-55342b2aa/",
   },
 ];
 
@@ -47,7 +48,7 @@ const About = () => {
           <li>Searchable database of central and state schemes</li>
           <li>Scheme recommendation via "Scheme For Me"</li>
           <li>Category-wise filtering for easy browsing</li>
-          <li>Multi-language support</li>
+          {/* <li>Multi-language support</li> */}
           <li>Regular updates and latest news carousel</li>
         </ul>
       </section>
