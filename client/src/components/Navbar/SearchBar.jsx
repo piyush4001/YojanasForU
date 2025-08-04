@@ -1,34 +1,3 @@
-// import React, { useState } from "react";
-// import { Search } from "lucide-react";
-// import { useNavigate } from "react-router-dom";
-
-// const SearchBar = () => {
-//   const [searchQuery, setSearchQuery] = useState("");
-//   const navigate = useNavigate();
-
-//   const handleKeyDown = (e) => {
-//     if (e.key === "Enter" && searchQuery.trim()) {
-//       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-//     }
-//   };
-
-//   return (
-//     <div className="relative text-gray-600 hidden md:block">
-//       <input
-//         type="text"
-//         placeholder="Search schemes..."
-//         value={searchQuery}
-//         onChange={(e) => setSearchQuery(e.target.value)}
-//         onKeyDown={handleKeyDown}
-//         className="bg-white h-10 px-10 pr-4 rounded-full text-sm focus:outline-none border border-gray-300 w-64 transition-all duration-300 focus:ring-2 focus:ring-blue-500"
-//       />
-//       <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-//     </div>
-//   );
-// };
-
-// export default SearchBar;
-
 import React, { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";

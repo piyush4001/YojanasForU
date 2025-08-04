@@ -3,7 +3,7 @@ import { Github, Linkedin } from "lucide-react"; // Optional icons
 
 const teamMembers = [
   {
-    name: "Kunal Sharma",
+    name: "Krishnapal Sonaniya",
     role: "Frontend Developer",
     bio: "Passionate about building accessible user interfaces and simplifying public services.",
     image: "https://i.pravatar.cc/150?img=3",
@@ -11,19 +11,11 @@ const teamMembers = [
     linkedin: "https://linkedin.com/in/example",
   },
   {
-    name: "Ananya Patel",
+    name: "Piyush Soni",
     role: "Backend Developer",
     bio: "Focused on building secure, scalable APIs and infrastructure for civic tech.",
-    image: "https://i.pravatar.cc/150?img=5",
+    image: "https://i.pravatar.cc/150?img=58",
     github: "https://github.com/example",
-    linkedin: "https://linkedin.com/in/example",
-  },
-  {
-    name: "Ravi Verma",
-    role: "UI/UX Designer",
-    bio: "Designs intuitive user flows and modern layouts for inclusive experiences.",
-    image: "https://i.pravatar.cc/150?img=8",
-    github: "",
     linkedin: "https://linkedin.com/in/example",
   },
 ];
