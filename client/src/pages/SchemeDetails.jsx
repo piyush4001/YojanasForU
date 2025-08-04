@@ -6,6 +6,7 @@ import axios from "axios";
 const SchemeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  // console.log("Scheme ID:", id);
 
   const [scheme, setScheme] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,17 +14,17 @@ const SchemeDetail = () => {
 
   useEffect(() => {
     const fetchScheme = async () => {
-      setLoading(true);
       try {
-        const res = await axios.get(
+        //console.log("Scheme ID:", id);
+        const response = await axios.get(
           `http://localhost:8000/api/v1/schemes/${id}`
         );
-        setScheme(res.data.scheme);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load scheme details");
-      } finally {
+        // console.log("Raw Response:", response);
+        setScheme(response.data.data); // ✅ Correct extraction
+        // console.log("Fetched Scheme:", response.data.data);
         setLoading(false);
+      } catch (error) {
+        console.error("Error fetching scheme:", error);
       }
     };
 
