@@ -68,6 +68,8 @@ const getAllSchemes = async (req, res) => {
       limit = undefined
     }
     const skip = (page - 1) * (limit || 0)
+    console.log("Query Object:", queryObj)
+
     const total = await Scheme.countDocuments(queryObj)
     const schemes = await Scheme.find(queryObj).skip(skip).limit(limit)
 
@@ -86,42 +88,59 @@ const getAllSchemes = async (req, res) => {
 
 const getSchemesByCategory = asyncHandler(async (req, res) => {
   const categoryParam = req.params.name?.toLowerCase().trim()
+  const govTypeQuery = req.query.govType?.toLowerCase().trim()
+  const page = parseInt(req.query.page) || 1
+  const limit = parseInt(req.query.limit) || 10
 
   if (!categoryParam) {
     throw new ApiError(400, "Category name is required")
   }
 
-  // Step 1: Clean and extract words (e.g., "Women & Child" → ["women", "child"])
+  // Convert categoryParam into word tokens
   const inputWords = categoryParam
     .split(/\s|&|,/)
     .map((w) => w.trim().toLowerCase())
     .filter(Boolean)
 
-  // Step 2: Fetch all schemes and manually filter
+  // Fetch all schemes (could optimize with indexed queries if needed)
   const allSchemes = await Scheme.find()
 
-  // Step 3: Match if any category word matches inputWords
-  const matchingSchemes = allSchemes.filter((scheme) => {
+  // Filter based on category
+  let matchingSchemes = allSchemes.filter((scheme) => {
     if (!Array.isArray(scheme.category)) return false
 
-    // Convert camelCase categories like "seniorCitizens" to ["senior", "citizens"]
     const flatCategoryWords = scheme.category
       .map((cat) =>
         cat
-          .replace(/([a-z])([A-Z])/g, "$1 $2") // camelCase to space
+          .replace(/([a-z])([A-Z])/g, "$1 $2") // camelCase to words
           .toLowerCase()
           .split(" ")
       )
       .flat()
 
-    // Check if at least one input word exists in category words
     return inputWords.some((inputWord) => flatCategoryWords.includes(inputWord))
   })
 
+  // Filter based on govType if provided
+  if (govTypeQuery) {
+    matchingSchemes = matchingSchemes.filter(
+      (scheme) => scheme.govType?.toLowerCase() === govTypeQuery
+    )
+  }
+
+  // Pagination logic
+  const total = matchingSchemes.length
+  const startIndex = (page - 1) * limit
+  const endIndex = startIndex + limit
+  const paginatedSchemes = matchingSchemes.slice(startIndex, endIndex)
+
   res.status(200).json({
     success: true,
-    message: `${matchingSchemes.length} schemes found for category`,
-    data: matchingSchemes,
+    message: `${paginatedSchemes.length} schemes found for category`,
+    total,
+    currentPage: page,
+    totalPages: Math.ceil(total / limit),
+    data: paginatedSchemes,
   })
 })
 

@@ -12,7 +12,7 @@ const Schemes = () => {
   const [error, setError] = useState(null);
   const [availableCategories, setAvailableCategories] = useState([]);
 
-  // 👇 Pagination state
+  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const schemesPerPage = 3;
 
@@ -25,7 +25,8 @@ const Schemes = () => {
         const response = await axios.post(
           "http://localhost:8000/api/v1/schemes/filter",
           {
-            type: govType !== "all" ? govType : undefined,
+            govType: govType !== "all" ? govType : undefined,
+            category: selectedCategory !== "all" ? selectedCategory : undefined,
           },
           {
             headers: {
@@ -54,31 +55,22 @@ const Schemes = () => {
     };
 
     fetchSchemes();
-  }, [govType]);
-
-  // 👇 Filtered based on selected category
-  const filteredSchemes =
-    selectedCategory === "all"
-      ? schemes
-      : schemes.filter((scheme) => scheme.category?.includes(selectedCategory));
+  }, [govType, selectedCategory]);
 
   const selectedCategoryName =
     selectedCategory === "all"
       ? "All Categories"
       : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1);
 
-  // 👇 Pagination logic
+  // Pagination logic
   const indexOfLastScheme = currentPage * schemesPerPage;
   const indexOfFirstScheme = indexOfLastScheme - schemesPerPage;
-  const currentSchemes = filteredSchemes.slice(
-    indexOfFirstScheme,
-    indexOfLastScheme
-  );
-  const totalPages = Math.ceil(filteredSchemes.length / schemesPerPage);
+  const currentSchemes = schemes.slice(indexOfFirstScheme, indexOfLastScheme);
+  const totalPages = Math.ceil(schemes.length / schemesPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: "smooth" }); // scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -110,7 +102,7 @@ const Schemes = () => {
                 onClick={() => {
                   setSelectedCategory("all");
                   setDropdownOpen(false);
-                  setCurrentPage(1); // reset page
+                  setCurrentPage(1);
                 }}
                 className={`w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-gray-100 ${
                   selectedCategory === "all" ? "bg-gray-100 font-semibold" : ""
@@ -124,7 +116,7 @@ const Schemes = () => {
                   onClick={() => {
                     setSelectedCategory(cat);
                     setDropdownOpen(false);
-                    setCurrentPage(1); // reset page
+                    setCurrentPage(1);
                   }}
                   className={`w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-gray-100 ${
                     selectedCategory === cat ? "bg-gray-100 font-semibold" : ""
@@ -139,12 +131,12 @@ const Schemes = () => {
 
         {/* Government Type Filter */}
         <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-lg border shadow-sm">
-          {["all", "central", "state"].map((type) => (
+          {["all", "Central", "State"].map((type) => (
             <button
               key={type}
               onClick={() => {
                 setGovType(type);
-                setCurrentPage(1); // reset page
+                setCurrentPage(1);
               }}
               className={`px-3 py-1 rounded-full text-sm capitalize transition ${
                 govType === type
@@ -163,7 +155,7 @@ const Schemes = () => {
         <p className="text-center text-gray-500">Loading schemes...</p>
       ) : error ? (
         <p className="text-center text-red-500">{error}</p>
-      ) : filteredSchemes.length === 0 ? (
+      ) : schemes.length === 0 ? (
         <p className="text-center text-gray-500">
           No schemes found for this filter.
         </p>
@@ -175,7 +167,7 @@ const Schemes = () => {
             ))}
           </div>
 
-          {/* Pagination with Previous/Next */}
+          {/* Pagination */}
           <div className="mt-10 flex justify-center items-center gap-2 flex-wrap">
             <button
               onClick={() => handlePageChange(currentPage - 1)}

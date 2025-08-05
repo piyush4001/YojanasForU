@@ -19,6 +19,7 @@ import ChatbotModal from "./components/ChatbotModal";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import SchemeForMe from "./pages/SchemesForMe";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -69,6 +70,7 @@ const App = () => {
             <Route path="/schemes" element={<Schemes />} />
             <Route path="/schemes/:id" element={<SchemeDetails />} />
             <Route path="/category/:name" element={<CategoryPage />} />
+            <Route path="/scheme-for-me" element={<SchemeForMe />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/search" element={<SearchResults />} />

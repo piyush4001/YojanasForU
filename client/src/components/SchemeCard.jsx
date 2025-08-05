@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 const SchemeCard = ({ scheme }) => {
   return (
     <div className="bg-white rounded-2xl shadow-md p-4 border hover:shadow-lg transition duration-300">
-      <h2 className="text-xl font-semibold text-blue-700 mb-2">
-        {scheme.title}
-      </h2>
+      <Link to={`/schemes/${scheme._id}`}>
+        <h2 className="text-xl font-semibold text-blue-700 mb-2">
+          {scheme.title}
+        </h2>
+      </Link>
       <p className="text-gray-700 mb-3">{scheme.description}</p>
 
       <div className="text-sm text-gray-500 mb-1">
