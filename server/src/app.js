@@ -10,7 +10,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://yojnaforu.onrender.com"],
+    origin: origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 )
