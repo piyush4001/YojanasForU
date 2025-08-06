@@ -8,21 +8,10 @@ import { errorHandler } from "./middlewares/error.middleware.js"
 
 const app = express()
 
-// TEMP FIX: Add manual headers
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", process.env.CORS_ORIGIN);
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,Authorization");
-  next();
-});
 
 // CORS
 app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  })
+  cors()
 )
 
 app.use(express.json({ limit: "16kb" }))
