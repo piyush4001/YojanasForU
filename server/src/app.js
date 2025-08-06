@@ -1,12 +1,26 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import { errorHandler } from "./middlewares/error.middleware.js"
 
 const app = express()
+
+// TEMP FIX: Add manual headers
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", process.env.CORS_ORIGIN);
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,Authorization");
+  next();
+});
+
+// CORS
 app.use(
   cors({
-    origin: [ "https://yojanas-for-u.vercel.app" , "http://localhost:5173"],
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 )
@@ -16,19 +30,21 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 app.use(cookieParser())
 app.use(express.static("public"))
 
-// import routes
+// routes
 import healthcheckRouter from "./routes/healthcheck.route.js"
 import userRouter from "./routes/user.route.js"
 import schemeRouter from "./routes/scheme.route.js"
-//routes
+import chatRoutes from "./routes/chat.route.js"
 
 app.use("/api/v1/healthcheck", healthcheckRouter)
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/schemes", schemeRouter)
-import chatRoutes from "./routes/chat.route.js"
 app.use("/api", chatRoutes)
+
 app.get("/", (req, res) => {
   res.send("🚀 YojanasForU backend is running!");
-});
+})
+
 app.use(errorHandler)
+
 export { app }
