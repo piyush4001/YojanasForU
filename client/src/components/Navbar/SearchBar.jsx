@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "@/api";
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,10 +15,12 @@ const SearchBar = () => {
   useEffect(() => {
     const fetchAllSchemes = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:8000/api/v1/schemes/filter",
+        const response = await api.post(
+          "/schemes/filter",
           {},
-          { headers: { "Content-Type": "application/json" } }
+          {
+            headers: { "Content-Type": "application/json" },
+          }
         );
 
         const data = Array.isArray(response.data.data)

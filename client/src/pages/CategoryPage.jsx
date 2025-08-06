@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import api from "@/api";
+
 import SchemeCard from "../components/SchemeCard";
 
 const CategoryPage = () => {
@@ -14,9 +15,7 @@ const CategoryPage = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get(
-          `http://localhost:8000/api/v1/schemes/category/${name}`
-        );
+        const response = await api.get(`/schemes/category/${name}`);
         setSchemes(response.data?.data || []);
         console.log("Fetched schemes:", response.data?.data);
       } catch (err) {

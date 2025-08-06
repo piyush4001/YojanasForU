@@ -4,7 +4,8 @@ import { UserCircle2, ChevronDown } from "lucide-react";
 import SchemeFormModal from "./SchemeFormModal";
 import SearchBar from "./SearchBar";
 import logo from "../../assets/logo.png";
-import axios from "axios";
+import api from "@/api";
+// Assuming you have an api.js file for axios instance
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -18,9 +19,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const res = await axios.get("/api/v1/users/get-current-user", {
-          withCredentials: true,
-        });
+        const res = await api.get("/users/get-current-user");
         setUser(res.data?.data);
       } catch (err) {
         setUser(null);
@@ -47,7 +46,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("/api/v1/users/logout", {}, { withCredentials: true });
+      await api.post("/users/logout", {});
       setUser(null);
       // Redirect to login/signup page
       navigate("/AuthCard");

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "@/api";
+
 import SchemeCard from "../components/SchemeCard";
 import LatestCarousel from "../components/LatestCarousel";
 import CategoryCard from "../components/CategoryCard";
@@ -28,9 +29,7 @@ const Home = () => {
   useEffect(() => {
     const fetchSchemes = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:8000/api/v1/schemes/latest-scheme"
-        );
+        const res = await api.get("/schemes/latest-scheme");
         setLatestSchemes(res.data.data || []);
 
         // console.log("Latest schemes fetched:", res.data);

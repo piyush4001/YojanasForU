@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import SchemeCard from "../components/SchemeCard";
-import axios from "axios";
+import api from "@/api";
 
 const SearchResults = () => {
   const location = useLocation();
@@ -13,8 +13,8 @@ const SearchResults = () => {
     const fetchSchemes = async () => {
       setLoading(true);
       try {
-        const response = await axios.post(
-          "http://localhost:8000/api/v1/schemes/filter",
+        const response = await api.post(
+          "/schemes/filter",
           {},
           {
             headers: { "Content-Type": "application/json" },

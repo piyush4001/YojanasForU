@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import api from "@/api";
 
 const Chatbot = () => {
   const [language, setLanguage] = useState("");
@@ -23,7 +23,7 @@ const Chatbot = () => {
     setInput("");
 
     try {
-      const res = await axios.post("/api/chat", {
+      const res = await api.post("/api/chat", {
         message: input,
         language: language || null,
       });

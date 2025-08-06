@@ -1,6 +1,6 @@
 // client/src/context/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from "react";
-import axios from "axios";
+import api from "@/api";
 
 // Create the context
 const AuthContext = createContext(null);
@@ -15,9 +15,7 @@ export const AuthProvider = ({ children }) => {
     const checkLoggedIn = async () => {
       try {
         // The cookie is sent automatically by the browser
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/users/profile`
-        );
+        const { data } = await api.get("/users/profile");
         setUser(data);
       } catch (error) {
         setUser(null);

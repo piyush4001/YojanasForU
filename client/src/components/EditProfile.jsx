@@ -1,8 +1,9 @@
 import React, { use, useEffect, useState } from "react";
-import axios from "axios";
+import api from "@/api";
+
 import { avatarOptions } from "../utils/avatarOptions";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const EditProfile = () => {
   const [formData, setFormData] = useState({
     fullname: "",
@@ -68,8 +69,8 @@ const EditProfile = () => {
         console.error("Failed to fetch states data:", err);
       });
 
-    axios
-      .get("/api/v1/users/get-current-user", { withCredentials: true })
+    api
+      .get("/users/get-current-user")
       .then((res) => {
         const {
           fullname,
@@ -116,11 +117,7 @@ const EditProfile = () => {
     setError(null);
 
     try {
-      await axios.patch(
-        "/api/v1/users/profile",
-        { ...formData },
-        { withCredentials: true }
-      );
+      await api.patch("/users/profile", { ...formData });
       navigate("/profile");
     } catch (err) {
       setError("Failed to update profile. Please try again.");

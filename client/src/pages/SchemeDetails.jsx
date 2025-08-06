@@ -1,7 +1,7 @@
 // src/pages/SchemeDetail.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "@/api";
 
 const SchemeDetail = () => {
   const { id } = useParams();
@@ -16,9 +16,7 @@ const SchemeDetail = () => {
     const fetchScheme = async () => {
       try {
         //console.log("Scheme ID:", id);
-        const response = await axios.get(
-          `http://localhost:8000/api/v1/schemes/${id}`
-        );
+        const response = await api.get(`/schemes/${id}`);
         // console.log("Raw Response:", response);
         setScheme(response.data.data); //  Correct extraction
         // console.log("Fetched Scheme:", response.data.data);

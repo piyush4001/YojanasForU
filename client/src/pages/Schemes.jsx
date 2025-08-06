@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import SchemeCard from "../components/SchemeCard";
-import axios from "axios";
+import api from "@/api";
 
 const Schemes = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -22,8 +22,8 @@ const Schemes = () => {
       setError(null);
 
       try {
-        const response = await axios.post(
-          "http://localhost:8000/api/v1/schemes/filter",
+        const response = await api.post(
+          "/schemes/filter",
           {
             govType: govType !== "all" ? govType : undefined,
             category: selectedCategory !== "all" ? selectedCategory : undefined,

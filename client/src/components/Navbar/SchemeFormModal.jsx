@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "@/api";
+// Assuming you have an api.js file for axios instance
 const SchemeFormModal = ({ onClose }) => {
   const [formData, setFormData] = useState({
     age: "",
@@ -21,19 +22,16 @@ const SchemeFormModal = ({ onClose }) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "http://localhost:8000/api/v1/schemes/filter",
-        {
-          gender: formData.gender,
-          category: formData.category,
-          govType: formData.govType,
-          caste: formData.caste,
-          income: formData.income,
-          // Optionally add  state, district, etc.
-          page: 1,
-          limit: 10,
-        }
-      );
+      const res = await api.post("/schemes/filter", {
+        gender: formData.gender,
+        category: formData.category,
+        govType: formData.govType,
+        caste: formData.caste,
+        income: formData.income,
+        // Optionally add  state, district, etc.
+        page: 1,
+        limit: 10,
+      });
 
       // Redirect with response data to SchemeForMe page
       console.log("Schemes found:", res.data.data);

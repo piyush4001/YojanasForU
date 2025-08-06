@@ -17,7 +17,8 @@ import AuthPage from "./pages/AuthPage";
 import EditProfile from "./components/EditProfile";
 import ChatbotModal from "./components/ChatbotModal";
 import { ToastContainer } from "react-toastify";
-import axios from "axios";
+import api from "@/api";
+
 import "react-toastify/dist/ReactToastify.css";
 import SchemeForMe from "./pages/SchemesForMe";
 const App = () => {
@@ -27,9 +28,7 @@ const App = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/users/me", {
-          withCredentials: true,
-        });
+        const res = await api.get("/users/me");
 
         setIsAuthenticated(res.status === 200);
       } catch (err) {

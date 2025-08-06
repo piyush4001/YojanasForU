@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
+import api from "@/api";
+
+import { API_BASE_URL } from "@/config";
 
 const AuthCard = ({ onAuthSuccess }) => {
   const [authMode, setAuthMode] = useState("register");
@@ -19,15 +21,14 @@ const AuthCard = ({ onAuthSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const endpoint = isRegister
-      ? "http://localhost:8000/api/v1/users/register"
-      : "http://localhost:8000/api/v1/users/login";
+      ? `${API_BASE_URL}/users/register`
+      : `${API_BASE_URL}/users/login`;
 
     try {
-      const res = await axios.post(endpoint, formData, {
+      const res = await api.post(endpoint, formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true,
       });
 
       toast.success(

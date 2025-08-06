@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "@/api";
+
 import { UserCircle2, Mail, Phone, Edit3, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -146,9 +147,7 @@ const Profile = () => {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("/api/v1/users/get-current-user", {
-          withCredentials: true,
-        });
+        const res = await api.get("/users/get-current-user");
         setUser(res.data.data);
         setError(null);
       } catch (err) {

@@ -1,13 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import tsconfigPaths from "vite-tsconfig-paths"; // ✅ import this
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  server: {
-    proxy: {
-      "/api": "http://localhost:8000", // or whatever your backend port is
-    },
-  },
+  plugins: [
+    react(),
+    tailwindcss(),
+    tsconfigPaths(), // ✅ use this
+  ],
+  server: {},
 });
