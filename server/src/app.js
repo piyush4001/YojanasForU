@@ -27,5 +27,8 @@ app.use("/api/v1/users", userRouter)
 app.use("/api/v1/schemes", schemeRouter)
 import chatRoutes from "./routes/chat.route.js"
 app.use("/api", chatRoutes)
+app.get("/", (req, res) => {
+  res.send("🚀 YojanasForU backend is running!");
+});
 app.use(errorHandler)
 export { app }
