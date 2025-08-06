@@ -6,7 +6,7 @@ import { errorHandler } from "./middlewares/error.middleware.js"
 const app = express()
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://yojnaforu.onrender.com"],
     credentials: true,
   })
 )
