@@ -10,7 +10,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://yojnaforu.onrender.com"],
+    origin:process.env.CORS_ORIGIN,
     credentials: true,
   })
 )
@@ -31,7 +31,7 @@ app.use("/api/v1/healthcheck", healthcheckRouter)
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/schemes", schemeRouter)
 import chatRoutes from "./routes/chat.route.js"
-app.use("/api", chatRoutes)
+app.use("/api/v1/chats", chatRoutes)
 app.get("/", (req, res) => {
   res.send("🚀 YojanasForU backend is running!")
 })
