@@ -6,7 +6,7 @@ import { errorHandler } from "./middlewares/error.middleware.js"
 const app = express()
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://yojnaforu.onrender.com"],
     credentials: true,
   })
 )
@@ -27,5 +27,8 @@ app.use("/api/v1/users", userRouter)
 app.use("/api/v1/schemes", schemeRouter)
 import chatRoutes from "./routes/chat.route.js"
 app.use("/api", chatRoutes)
+app.get("/", (req, res) => {
+  res.send("🚀 YojanasForU backend is running!");
+});
 app.use(errorHandler)
 export { app }
