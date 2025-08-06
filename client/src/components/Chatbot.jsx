@@ -23,7 +23,7 @@ const Chatbot = () => {
     setInput("");
 
     try {
-      const res = await api.post("/api/chat", {
+      const res = await api.post("/chats/chat", {
         message: input,
         language: language || null,
       });

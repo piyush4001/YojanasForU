@@ -1,112 +1,123 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { Mail, User, MessageCircle, Loader2 } from "lucide-react";
+import api from "@/api";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [success, setSuccess] = useState(null);
+  const [loading, setLoading] = useState(false); // ✅ New
 
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Message sent successfully!");
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
+    setLoading(true); // ✅ Start loading
+    setSuccess(null); // Clear previous status
+    try {
+      await api.post("/api/contact", form);
+      setSuccess(true);
+      setForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      setSuccess(false);
+    } finally {
+      setLoading(false); // ✅ Stop loading
+    }
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      {/* Heading */}
-      <h1 className="text-4xl font-bold text-center mb-4">Contact Us</h1>
-      <p className="text-center text-gray-600 mb-10">
-        Have questions or feedback? We'd love to hear from you.
-      </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+      <div className="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl p-8 max-w-xl w-full border border-indigo-200">
+        <h2 className="text-3xl font-semibold text-center text-indigo-700 mb-6">
+          Contact Us
+        </h2>
 
-      {/* Contact Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-2xl p-8 space-y-6"
-      >
-        <div className="grid sm:grid-cols-2 gap-6">
-          <div>
-            <label className="block mb-1 font-medium">Your Name</label>
+        {success === true && (
+          <div className="bg-green-100 text-green-800 p-3 rounded mb-4 text-center">
+            ✅ Your message has been sent!
+          </div>
+        )}
+        {success === false && (
+          <div className="bg-red-100 text-red-800 p-3 rounded mb-4 text-center">
+            ❌ Something went wrong. Please try again later.
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Name */}
+          <div className="relative">
+            <User
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-indigo-500"
+              size={20}
+            />
             <input
               type="text"
               name="name"
-              value={formData.name}
-              onChange={handleChange}
+              placeholder="Your Name"
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={form.name}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
             />
           </div>
-          <div>
-            <label className="block mb-1 font-medium">Your Email</label>
+
+          {/* Email */}
+          <div className="relative">
+            <Mail
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-indigo-500"
+              size={20}
+            />
             <input
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
+              placeholder="Your Email"
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={form.email}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
             />
           </div>
-        </div>
 
-        <div>
-          <label className="block mb-1 font-medium">Subject</label>
-          <input
-            type="text"
-            name="subject"
-            value={formData.subject}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+          {/* Message */}
+          <div className="relative">
+            <MessageCircle
+              className="absolute left-3 top-3 text-indigo-500"
+              size={20}
+            />
+            <textarea
+              name="message"
+              placeholder="Your Message"
+              required
+              value={form.message}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 pt-3 pb-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition min-h-[120px]"
+            />
+          </div>
 
-        <div>
-          <label className="block mb-1 font-medium">Message</label>
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-            rows={5}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
-        >
-          Send Message
-        </button>
-      </form>
-
-      {/* Contact Info */}
-      <div className="mt-12 text-center text-gray-600 space-y-2">
-        <p>
-          Email:{" "}
-          <a href="mailto:support@schemeportal.in" className="text-blue-600">
-            support@schemeportal.in
-          </a>
-        </p>
-        <p>Support Hours: Mon–Fri, 9 AM – 6 PM</p>
-        <p>Location: Indore, India</p>
+          {/* Send Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full flex items-center justify-center gap-2 font-medium py-2 rounded-lg transition 
+              ${
+                loading
+                  ? "bg-indigo-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700"
+              } 
+              text-white`}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={20} />
+                Sending...
+              </>
+            ) : (
+              "Send Message"
+            )}
+          </button>
+        </form>
       </div>
     </div>
   );
