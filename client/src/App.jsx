@@ -48,40 +48,51 @@ const App = () => {
 
   if (loading) return null; // or show spinner
 
-  if (!isAuthenticated) {
-    return (
-      <>
-        <AuthCard onAuthSuccess={handleAuthSuccess} />
-        <ToastContainer />
-      </>
-    );
-  }
+  // if (!isAuthenticated) {
+  //   return (
+  //     <>
+  //       <AuthCard onAuthSuccess={handleAuthSuccess} />
+  //       <ToastContainer />
+  //     </>
+  //   );
+  // }
 
   return (
-    <>
-      <ChatbotModal />
-      <Router>
-        <ScrollToTop />
-        <div className="overflow-x-hidden">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/schemes" element={<Schemes />} />
-            <Route path="/schemes/:id" element={<SchemeDetails />} />
-            <Route path="/category/:name" element={<CategoryPage />} />
-            <Route path="/scheme-for-me" element={<SchemeForMe />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/search" element={<SearchResults />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/signin" element={<AuthPage />} />
-            <Route path="/edit-profile" element={<EditProfile />} />
-            <Route path="*" element={<NotFound />} />{" "}
-          </Routes>
-          <Footer />
-        </div>
-      </Router>
-    </>
+    <Router>
+      <ScrollToTop />
+      <div className="overflow-x-hidden">
+        {isAuthenticated ? (
+          <>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/schemes" element={<Schemes />} />
+              <Route path="/schemes/:id" element={<SchemeDetails />} />
+              <Route path="/category/:name" element={<CategoryPage />} />
+              <Route path="/scheme-for-me" element={<SchemeForMe />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/search" element={<SearchResults />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/edit-profile" element={<EditProfile />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Footer />
+          </>
+        ) : (
+          <>
+            <Routes>
+              <Route
+                path="*"
+                element={<AuthCard onAuthSuccess={handleAuthSuccess} />}
+              />
+            </Routes>
+          </>
+        )}
+        <ChatbotModal />
+        <ToastContainer />
+      </div>
+    </Router>
   );
 };
 
