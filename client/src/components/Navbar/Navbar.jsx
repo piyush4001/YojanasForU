@@ -174,6 +174,7 @@ import SchemeFormModal from "./SchemeFormModal";
 import SearchBar from "./SearchBar";
 import logo from "../../assets/logo.png";
 import api from "@/api";
+import { browser } from "globals";
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -214,6 +215,7 @@ const Navbar = () => {
     try {
       await api.post("/users/logout");
       setUser(null);
+      window.location.reload();
     } catch (err) {
       console.error(
         "Logout failed:",
