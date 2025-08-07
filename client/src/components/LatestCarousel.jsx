@@ -163,10 +163,7 @@ const LatestCarousel = () => {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
         className="text-2xl md:text-3xl font-bold text-center mb-6 text-[#16355D]"
-      >
-        Featured Banners
-      </motion.h2>
-
+      ></motion.h2>
       <div
         ref={sliderRef}
         className="keen-slider max-w-6xl mx-auto rounded-xl overflow-hidden"
@@ -193,4 +190,3 @@ const LatestCarousel = () => {
 };
 
 export default LatestCarousel;
-

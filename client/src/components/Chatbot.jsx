@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import api from "@/api";
 
 const Chatbot = () => {
@@ -7,6 +7,18 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const chatRef = useRef(null);
+  const [userAvatar, setUserAvatar] = useState("");
+
+  useEffect(() => {
+    api
+      .get("/users/get-current-user")
+      .then((res) => {
+        setUserAvatar(res.data.data.avatar);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch user avatar:", err);
+      });
+  }, []);
 
   useEffect(() => {
     if (chatRef.current) {
@@ -139,8 +151,11 @@ const Chatbot = () => {
 
             {msg.type === "user" && (
               <img
-                src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png"
-                alt="user"
+                src={
+                  userAvatar ||
+                  "https://cdn-icons-png.flaticon.com/512/2202/2202112.png"
+                }
+                alt="user-avatar"
                 className="w-8 h-8 rounded-full"
               />
             )}

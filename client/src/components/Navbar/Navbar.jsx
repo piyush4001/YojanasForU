@@ -167,7 +167,6 @@
 
 // export default Navbar;
 
-
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { UserCircle2, ChevronDown } from "lucide-react";
@@ -192,7 +191,10 @@ const Navbar = () => {
         setUser(res.data?.data);
       } catch (err) {
         setUser(null);
-        console.log("Not logged in:", err.response?.data?.message || err.message);
+        console.log(
+          "Not logged in:",
+          err.response?.data?.message || err.message
+        );
       }
     };
     fetchCurrentUser();
@@ -212,9 +214,11 @@ const Navbar = () => {
     try {
       await api.post("/users/logout");
       setUser(null);
-      navigate("/AuthCard");
     } catch (err) {
-      console.error("Logout failed:", err.response?.data?.message || err.message);
+      console.error(
+        "Logout failed:",
+        err.response?.data?.message || err.message
+      );
     }
   };
 
@@ -327,16 +331,34 @@ const Navbar = () => {
               className="text-white"
             >
               {mobileMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor"
-                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor"
-                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               )}
             </button>
@@ -424,4 +446,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
