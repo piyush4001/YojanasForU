@@ -3,7 +3,7 @@ import nodemailer from "nodemailer"
 
 const router = express.Router()
 
-router.post("/", async (req, res) => {
+router.post("/contact", async (req, res) => {
   const { name, email, message } = req.body
 
   const transporter = nodemailer.createTransport({
