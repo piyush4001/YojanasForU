@@ -17,7 +17,7 @@ const Contact = () => {
     setLoading(true); // ✅ Start loading
     setSuccess(null); // Clear previous status
     try {
-      await api.post("/api/contact", form);
+      await api.post("/contact/", form);
       setSuccess(true);
       setForm({ name: "", email: "", message: "" });
     } catch (err) {
