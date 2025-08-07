@@ -24,13 +24,16 @@ app.use(express.static("public"))
 import healthcheckRouter from "./routes/healthcheck.route.js"
 import userRouter from "./routes/user.route.js"
 import schemeRouter from "./routes/scheme.route.js"
+import chatRoutes from "./routes/chat.route.js"
+import contactRouter from "./routes/contact.route.js"
 //routes
 
-import contactRouter from "./routes/contact.route.js"
+
+
 app.use("/api/v1/healthcheck", healthcheckRouter)
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/schemes", schemeRouter)
-import chatRoutes from "./routes/chat.route.js"
+app.use("/api/v1/contact",contactRouter);
 app.use("/api/v1/chats", chatRoutes)
 app.get("/", (req, res) => {
   res.send("🚀 YojanasForU backend is running!")
