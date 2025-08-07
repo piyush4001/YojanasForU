@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Chatbot from "./Chatbot";
-
+import chatbot from "../assets/chatbot.png"; // Adjust the import path as necessary
 const ChatbotModal = () => {
   const [open, setOpen] = useState(false);
 
@@ -12,7 +12,7 @@ const ChatbotModal = () => {
         className="fixed bottom-10 right-10 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition"
         aria-label="Open Chatbot"
       >
-        💬
+        <img src={chatbot} alt="Chatbot Icon" className="w-10 h-10" />
       </button>
 
       {/* Modal */}
